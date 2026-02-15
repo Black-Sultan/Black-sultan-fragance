@@ -16,9 +16,25 @@ body{
 
 /* HEADER */
 header{
-    text-align:center;
-    padding:60px 20px;
-    background:#000;
+    background: #000;
+    padding:120px 20px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+}
+
+header::before{
+    content:"";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 450px;
+    height: 450px;
+    background: url(img/Logo.jpg) no-repeat center;
+    background-size: contain;
+    opacity: 0.02;
+    pointer-events: none;
 }
 
 header h1{
@@ -168,8 +184,10 @@ footer{
 <body>
 
 <header>
-<h1>BLACK SULTAN</h1>
-<p>Lujo Árabe Sin Límites</p>
+    <div class="hero-text">
+        <h1>BLACK SULTAN</h1>
+        <p>Lujo Árabe Sin Límites</p>
+    </div>
 </header>
 
 <section class="contenedor">
@@ -262,6 +280,18 @@ footer{
 </div>
 </div>
 
+<div class="producto" onclick="abrirModal('Vintage Radio', descripcion9)">
+<div class="etiqueta">Nuevo</div>
+<img src="img/vintage-radio.jpg">
+<h3>Vintage Radio</h3>
+<p class="marca">Lattafa</p>
+<div class="footer-producto">
+<p class="precio">$34.000</p>
+<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
+</div>
+</div>
+
+
 </section>
 
 <!-- MODAL -->
@@ -319,6 +349,12 @@ inspirada en el Jean Paul Gaultier Paradise Garden.
 Las notas de salidas son piña, manzana, menta y jengibre.
 Las notas de corazon son notas marinas, lavanda y geranio mientras
 que las de fondo son sándalo, haba tonka, almizcle y pachulí`;
+
+const descripcion9 = `Las Tendecias modernas traen consigo una
+nueva era de fragancias que se centran en la sostenibilidad y
+la individualidad. Los consumidores de hoy buscan no solo atractivas
+sino con ingredientea fuertes que ofrezcan una experiencia unica.
+Aqui es donde entra Vintage Radio que brilla al ofrecer todo esto.`;
 
 function abrirModal(titulo, descripcion){
     document.getElementById("modal").style.display="flex";
