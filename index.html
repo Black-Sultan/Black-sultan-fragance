@@ -14,6 +14,16 @@ body{
     color:#fff;
 }
 
+/* PARTICULAS FONDO */
+#particulas{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:-1;
+}
+
 /* HEADER */
 header{
     background: #000;
@@ -71,15 +81,51 @@ header p{
     text-align:center;
     position:relative;
     border:1px solid #222;
-    transition:0.3s;
+    transition:0.4s;
     cursor:pointer;
     display:flex;
     flex-direction:column;
+
+    opacity:0;
+    transform:translateY(40px);
+    overflow:hidden;
+}
+
+.producto.visible{
+opacity:1;
+transform:translateY(0);
 }
 
 .producto:hover{
     transform:translateY(-6px);
     border-color:#d4af37;
+    box-shadow:0 10px 30px rgba(212,175,55,0.25);
+}
+
+/* EFECTO LUZ */
+.producto::before{
+content:"";
+position:absolute;
+top:0;
+left:-120%;
+width:60%;
+height:100%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(212,175,55,0.4),
+transparent
+);
+transform:skewX(-25deg);
+}
+
+.producto:hover::before{
+animation:luz 0.8s ease;
+}
+
+@keyframes luz{
+0%{left:-120%;}
+100%{left:120%;}
 }
 
 .producto img{
@@ -178,21 +224,68 @@ footer{
     font-size:13px;
 }
 
+/* HALO DE LUZ ARABE */
+
+.halo{
+position:relative;
+display:inline-block;
+z-index:2;
+}
+
+.halo::before{
+content:"";
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:420px;
+height:420px;
+background:radial-gradient(
+circle,
+rgba(212,175,55,0.35) 0%,
+rgba(212,175,55,0.18) 40%,
+rgba(212,175,55,0.08) 60%,
+transparent 80%
+);
+filter:blur(25px);
+animation:haloGlow 6s ease-in-out infinite;
+z-index:0;
+pointer-events:none;
+}
+
+@keyframes haloGlow{
+0%{
+transform:translate(-50%,-50%) scale(1);
+opacity:0.6;
+}
+
+50%{
+transform:translate(-50%,-50%) scale(1.15);
+opacity:1;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(1);
+opacity:0.6;
+}
+}
 </style>
 </head>
 
 <body>
 
+<canvas id="particulas"></canvas>
+
 <header>
-    <div class="hero-text">
-        <h1>BLACK SULTAN</h1>
-        <p>Lujo Árabe Sin Límites</p>
-    </div>
+    <div class="hero-text halo">
+    <h1 class="logo">BLACK SULTAN</h1>
+    <p>Lujo Árabe Sin Límites</p>
+</div>
 </header>
 
 <section class="contenedor">
 
-<div class="producto" onclick="abrirModal('Odyssey Spectra', descripcion1)">
+ <div class="producto" onclick="abrirModal('Odyssey Spectra', descripcion1)">
 <div class="etiqueta"></div>
 <img src="img/odyssey.jpg">
 <h3>Odyssey Spectra</h3>
@@ -322,7 +415,7 @@ footer{
 <p class="precio">$34.000</p>
 <a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
-</div>    
+</div>
 
 <div class="producto" onclick="abrirModal('9PM', descripcion13)">
 <div class="etiqueta">Nuevo</div>
@@ -344,8 +437,8 @@ footer{
 <p class="precio">$25.000</p>
 <a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
-</div>       
-    
+</div>
+
 </section>
 
 <!-- MODAL -->
@@ -392,63 +485,118 @@ const descripcion6 = `Frescura especiada-cítrica con corazón exótico
 y fondo cálido amaderado y ahumado.
 Moderna, elegante y con carácter contemporáneo.`;
 
-const descripcion7 = `Fragancia de la familia olfativa amaderada
-aromatica para hombres y mujeres.
-Las notas de salidas son manzana y bergamota.
-Las de corazon son canela y notas amaderadas.
-Las de fondo son almizcle y vainilla`;
+const descripcion7 = `Fragancia amaderada aromática para hombres y mujeres.
+Salida: manzana y bergamota.
+Corazón: canela y notas amaderadas.
+Fondo: almizcle y vainilla`;
 
-const descripcion8 = `Najdia Intense es una fragancia para hombres
-inspirada en el Jean Paul Gaultier Paradise Garden.
-Las notas de salidas son piña, manzana, menta y jengibre.
-Las notas de corazon son notas marinas, lavanda y geranio mientras
-que las de fondo son sándalo, haba tonka, almizcle y pachulí`;
+const descripcion8 = `Inspirada en Jean Paul Gaultier Paradise Garden.
+Salida: piña, manzana, menta y jengibre.
+Corazón: notas marinas, lavanda y geranio.
+Fondo: sándalo, haba tonka, almizcle y pachulí`;
 
-const descripcion9 = `Las Tendecias modernas traen consigo una
-nueva era de fragancias que se centran en la sostenibilidad y
-la individualidad. Los consumidores de hoy buscan no solo atractivas
-sino con ingredientea fuertes que ofrezcan una experiencia unica.
-Aqui es donde entra Vintage Radio que brilla al ofrecer todo esto.`;
+const descripcion9 = `Fragancia moderna con carácter único,
+ingredientes intensos y experiencia olfativa envolvente.`;
 
-const descripcion10 = `Odyssey Mega de Armaf 
-es una fragancia de la familia olfativa Amaderada Aromática para Hombres. 
-Esta fragrancia es nueva. Odyssey Mega Man se lanzó en 2023. 
-Las Notas de Salida son naranja, bergamota, jengibre, limón (lima ácida) y menta
-las Notas de Corazón son enebro de Virginia, geranio, salvia y piña
-las Notas de Fondo son haba tonka, cedro, vetiver y almizcle.`;
+const descripcion10 = `Odyssey Mega (2023).
+Salida: naranja, bergamota, jengibre, limón y menta.
+Corazón: enebro, geranio, salvia y piña.
+Fondo: haba tonka, cedro, vetiver y almizcle.`;
 
-const descripcion11 = `Yara de Lattafa Perfumes es una fragancia de la familia olfativa Oriental Vainilla para Mujeres.
-Yara se lanzó en 2020. 
-Las Notas de Salida son orquídea, heliotropo y naranja tangerina
-las Notas de Corazón son Acorde goloso y frutas tropicales
-las Notas de Fondo son vainilla, almizcle y sándalo.`;
+const descripcion11 = `Yara de Lattafa (2020).
+Salida: orquídea, heliotropo y mandarina.
+Corazón: acorde goloso y frutas tropicales.
+Fondo: vainilla, almizcle y sándalo.`;
 
-const descripcion12 = `Her Confession de Lattafa Perfumes es una fragancia de la familia olfativa para Mujeres. 
-Esta fragrancia es nueva. Her Confession se lanzó en 2024. 
-Las Notas de Salida son canela y Mystikal
-las Notas de Corazón son nardos, jazmín, incienso y Mahonial 
-las Notas de Fondo son vainilla, almizcle y haba tonka.`;
+const descripcion12 = `Her Confession (2024).
+Salida: canela y Mystikal.
+Corazón: nardos, jazmín, incienso y Mahonial.
+Fondo: vainilla, almizcle y haba tonka.`;
 
-const descripcion13 = `9pm de Afnan es una fragancia de la familia olfativa Oriental Vainilla para Hombres.
-9pm se lanzó en 2020. 
-Las Notas de Salida son manzana, canela, lavanda silvestre y bergamota
-las Notas de Corazón son flor de azahar del naranjo y lirio de los valles (muguete)
-las Notas de Fondo son vainilla, haba tonka, ámbar y pachulí.`;
+const descripcion13 = `9PM de Afnan (2020).
+Salida: manzana, canela, lavanda y bergamota.
+Corazón: flor de azahar y muguete.
+Fondo: vainilla, haba tonka, ámbar y pachulí.`;
 
-const descripcion14 = `Qaed Al Fursan de Lattafa Perfumes es una fragancia de la familia olfativa Oriental Amaderada para Hombres y Mujeres.
-Qaed Al Fursan se lanzó en 2016. Las Notas de Salida son piña y azafrán
-las Notas de Corazón son abeto balsámico y jazmín
-las Notas de Fondo son cedro, ámbar y madera de oud.`;
-    
+const descripcion14 = `Qaed Al Fursan (2016).
+Salida: piña y azafrán.
+Corazón: abeto balsámico y jazmín.
+Fondo: cedro, ámbar y oud.`;
+
 function abrirModal(titulo, descripcion){
-    document.getElementById("modal").style.display="flex";
-    document.getElementById("modalTitulo").innerText=titulo;
-    document.getElementById("modalDescripcion").innerText=descripcion;
+document.getElementById("modal").style.display="flex";
+document.getElementById("modalTitulo").innerText=titulo;
+document.getElementById("modalDescripcion").innerText=descripcion;
 }
 
 function cerrarModal(){
-    document.getElementById("modal").style.display="none";
+document.getElementById("modal").style.display="none";
 }
+
+/* ANIMACION PRODUCTOS */
+
+const productos = document.querySelectorAll('.producto');
+
+const observer = new IntersectionObserver(entries=>{
+entries.forEach(entry=>{
+if(entry.isIntersecting){
+entry.target.classList.add("visible");
+}
+});
+});
+
+productos.forEach(producto=>{
+observer.observe(producto);
+});
+
+/* PARTICULAS DORADAS */
+
+const canvas = document.getElementById("particulas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particulas=[];
+
+for(let i=0;i<60;i++){
+particulas.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2,
+d:Math.random()*1
+});
+}
+
+function dibujar(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="rgba(212,175,55,0.6)";
+ctx.beginPath();
+
+for(let i=0;i<particulas.length;i++){
+let p=particulas[i];
+ctx.moveTo(p.x,p.y);
+ctx.arc(p.x,p.y,p.r,0,Math.PI*2,true);
+}
+
+ctx.fill();
+mover();
+}
+
+function mover(){
+for(let i=0;i<particulas.length;i++){
+let p=particulas[i];
+p.y+=p.d;
+
+if(p.y>canvas.height){
+p.y=0;
+p.x=Math.random()*canvas.width;
+}
+}
+}
+
+setInterval(dibujar,33);
 
 </script>
 
