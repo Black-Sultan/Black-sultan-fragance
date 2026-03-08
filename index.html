@@ -33,6 +33,15 @@ header{
     overflow: hidden;
 }
 
+header{
+background:#000;
+padding:120px 20px;
+position:relative;
+text-align:center;
+overflow:hidden;
+background-attachment:fixed;
+}
+
 header::before{
     content:"";
     position: absolute;
@@ -91,6 +100,30 @@ header p{
     overflow:hidden;
 }
 
+.producto::after{
+content:"";
+position:absolute;
+inset:0;
+border-radius:12px;
+padding:1px;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(212,175,55,0.8),
+transparent
+);
+-webkit-mask:
+linear-gradient(#000 0 0) content-box,
+linear-gradient(#000 0 0);
+-webkit-mask-composite:xor;
+mask-composite:exclude;
+opacity:0;
+transition:0.5s;
+}
+.producto:hover::after{
+opacity:1;
+}
+
 .producto.visible{
 opacity:1;
 transform:translateY(0);
@@ -133,6 +166,19 @@ animation:luz 0.8s ease;
     aspect-ratio: 1 / 1;
     object-fit:cover;
     border-radius:8px;
+}
+
+.producto img{
+width:100%;
+aspect-ratio:1/1;
+object-fit:cover;
+border-radius:8px;
+transition:0.6s;
+}
+
+.producto:hover img{
+transform:scale(1.06);
+filter:brightness(1.15) contrast(1.05);
 }
 
 .etiqueta{
@@ -205,6 +251,7 @@ animation:luz 0.8s ease;
     border-radius:10px;
     position:relative;
     border:1px solid #d4af37;
+    animation:abrirModal 0.35s ease;
 }
 
 .cerrar{
@@ -269,10 +316,187 @@ transform:translate(-50%,-50%) scale(1);
 opacity:0.6;
 }
 }
+
+@keyframes haloGlow{
+0%{
+transform:translate(-50%,-50%) scale(1);
+opacity:0.6;
+}
+
+50%{
+transform:translate(-50%,-50%) scale(1.15);
+opacity:1;
+}
+
+100%{
+transform:translate(-50%,-50%) scale(1);
+opacity:0.6;
+}
+}
+
+/* MENU SUPERIOR */
+
+.menu{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+background:rgba(0,0,0,0.95);
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+z-index:2000;
+border-bottom:1px solid #222;
+}
+
+.menu-logo{
+color:#d4af37;
+font-weight:bold;
+letter-spacing:3px;
+font-size:14px;
+}
+
+.menu-links a{
+color:#fff;
+margin-left:25px;
+text-decoration:none;
+font-size:13px;
+letter-spacing:1px;
+}
+
+.menu-links a:hover{
+color:#d4af37;
+}
+
+/* WHATSAPP FLOTANTE */
+
+.whatsapp{
+position:fixed;
+bottom:25px;
+right:25px;
+background:#d4af37;
+color:#000;
+font-size:26px;
+width:60px;
+height:60px;
+display:flex;
+align-items:center;
+justify-content:center;
+border-radius:50%;
+text-decoration:none;
+box-shadow:0 0 20px rgba(212,175,55,0.7);
+z-index:3000;
+transition:0.3s;
+}
+
+.whatsapp:hover{
+transform:scale(1.1);
+}
+
+/* ESTRELLAS PERFUME */
+
+.estrellas{
+color:#d4af37;
+font-size:14px;
+margin:6px 0;
+}
+
+/* SECCION CONFIANZA */
+
+.confianza{
+text-align:center;
+padding:40px;
+color:#aaa;
+font-size:14px;
+line-height:1.8;
+}
+
+/* ANIMACION PRODUCTOS */
+
+.producto{
+animation:entradaProducto 0.8s ease forwards;
+}
+
+@keyframes entradaProducto{
+0%{
+opacity:0;
+transform:translateY(30px);
+}
+
+100%{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+/* SECCION BENEFICIOS */
+
+.beneficios{
+padding:70px 20px;
+text-align:center;
+background:#0a0a0a;
+}
+
+.beneficios h2{
+color:#d4af37;
+margin-bottom:40px;
+letter-spacing:2px;
+}
+
+.beneficios-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:30px;
+max-width:900px;
+margin:auto;
+}
+
+.beneficio{
+background:#161616;
+padding:25px;
+border-radius:10px;
+border:1px solid #222;
+transition:0.3s;
+}
+
+.beneficio:hover{
+transform:translateY(-5px);
+border-color:#d4af37;
+}
+
+.beneficio h3{
+color:#fff;
+margin-bottom:10px;
+}
+
+.beneficio p{
+color:#aaa;
+font-size:14px;
+}
+
+@keyframes abrirModal{
+
+from{
+opacity:0;
+transform:scale(0.85);
+}
+
+to{
+opacity:1;
+transform:scale(1);
+}
+
+}
+
 </style>
 </head>
 
 <body>
+
+    <nav class="menu">
+<div class="menu-logo">BLACK SULTAN</div>
+</nav>
 
 <canvas id="particulas"></canvas>
 
@@ -391,7 +615,7 @@ opacity:0.6;
 <p class="marca">Armaf</p>
 <div class="footer-producto">
 <p class="precio">$40.000</p>
-<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Odyssey%20Mega%20100ml" target="_blank">Consultar</a>
+<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
 </div>
 
@@ -402,7 +626,7 @@ opacity:0.6;
 <p class="marca">Lataffa</p>
 <div class="footer-producto">
 <p class="precio">$33.000</p>
-<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Yara de%20Lataffa%20100ml" target="_blank">Consultar</a>
+<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
 </div>
 
@@ -413,7 +637,7 @@ opacity:0.6;
 <p class="marca">Lataffa</p>
 <div class="footer-producto">
 <p class="precio">$34.000</p>
-<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Her%20Confession%20100ml" target="_blank">Consultar</a>
+<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
 </div>
 
@@ -424,7 +648,7 @@ opacity:0.6;
 <p class="marca">Afnan</p>
 <div class="footer-producto">
 <p class="precio">$37.000</p>
-<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%209%20PM%20100ml" target="_blank">Consultar</a>
+<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
 </div>
 
@@ -435,7 +659,7 @@ opacity:0.6;
 <p class="marca">Lataffa</p>
 <div class="footer-producto">
 <p class="precio">$25.000</p>
-<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Qaed al%20Fursan%20100ml" target="_blank">Consultar</a>
+<a class="boton" href="https://wa.me/56923812757?text=hola,%20quiero consultar por%20Vintage%20Radio%20100ml" target="_blank">Consultar</a>
 </div>
 </div>
 
@@ -449,6 +673,36 @@ opacity:0.6;
 <p id="modalDescripcion" style="line-height:1.6; color:#ccc;"></p>
 </div>
 </div>
+
+<section class="beneficios">
+
+<h2>¿Por qué elegir Black Sultan?</h2>
+
+<div class="beneficios-grid">
+
+<div class="beneficio">
+<h3>Perfumes Originales</h3>
+<p>Solo trabajamos con fragancias árabes auténticas de alta calidad.</p>
+</div>
+
+<div class="beneficio">
+<h3>Envíos a Todo Chile</h3>
+<p>Realizamos envíos seguros y rápidos a todo el país.</p>
+</div>
+
+<div class="beneficio">
+<h3>Lujo Accesible</h3>
+<p>Perfumes de estilo árabe premium a precios accesibles.</p>
+</div>
+
+<div class="beneficio">
+<h3>Atención Directa</h3>
+<p>Te atendemos directamente por WhatsApp para resolver todas tus dudas.</p>
+</div>
+
+</div>
+
+</section>
 
 <footer>
 © 2026 Black Sultan Fragrances
@@ -599,6 +853,8 @@ p.x=Math.random()*canvas.width;
 setInterval(dibujar,33);
 
 </script>
-
+<a href="https://wa.me/56923812757" class="whatsapp" target="_blank">
+💬
+</a>
 </body>
 </html>
